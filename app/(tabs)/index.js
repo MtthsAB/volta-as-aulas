@@ -1,13 +1,26 @@
 import React from 'react';
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, Alert, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Ionicons } from '@expo/vector-icons';
 import { useDados } from '../../context/DadosContext';
+import { useAuth } from '../../context/AuthContext';
 import Indicador from '../../components/Indicador';
 import { cores } from '../../styles/cores';
 
 // Painel inicial: resume os números do projeto
 export default function Painel() {
   const { kits, doadores, beneficiarios } = useDados();
+  const { usuarioLogado, sair } = useAuth();
+  // Logo após sair, a tela ainda renderiza uma vez com usuarioLogado = null
+  const primeiroNome = usuarioLogado ? usuarioLogado.nome.split(' ')[0] : '';
+
+  // Pede confirmação antes de encerrar a sessão
+  function confirmarSaida() {
+    Alert.alert('Sair', 'Deseja sair da sua conta?', [
+      { text: 'Cancelar', style: 'cancel' },
+      { text: 'Sair', style: 'destructive', onPress: sair },
+    ]);
+  }
 
   // Cálculos feitos a partir das listas do Context
   const kitsEmEstoque = kits.reduce((total, kit) => total + kit.quantidade, 0);
@@ -17,6 +30,13 @@ export default function Painel() {
   return (
     <SafeAreaView style={estilos.container} edges={['top']}>
       <ScrollView contentContainerStyle={estilos.conteudo}>
+        {/* Cabeçalho: saudação ao usuário logado e botão de sair */}
+        <View style={estilos.topo}>
+          <Text style={estilos.saudacao}>Olá, {primeiroNome}</Text>
+          <TouchableOpacity onPress={confirmarSaida} accessibilityLabel="Sair da conta">
+            <Ionicons name="log-out-outline" size={28} color={cores.primaria} />
+          </TouchableOpacity>
+        </View>
         <Text style={estilos.titulo}>Volta às Aulas Solidária</Text>
 
         {/* Grade de indicadores: duas colunas com flexWrap */}
@@ -44,6 +64,16 @@ const estilos = StyleSheet.create({
   },
   conteudo: {
     padding: 16,
+  },
+  topo: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 4,
+  },
+  saudacao: {
+    fontSize: 16,
+    color: cores.textoClaro,
   },
   titulo: {
     fontSize: 24,

@@ -89,7 +89,9 @@ export function DadosProvider({ children }) {
   }
 
   // Entrega: tira 1 do estoque do kit e marca a família como atendida
-  function registrarEntrega(beneficiarioId, kitId) {
+  // entreguePor = nome do voluntário logado que registrou a entrega.
+  // (Não usamos "responsavel" porque esse campo já é o responsável pela família.)
+  function registrarEntrega(beneficiarioId, kitId, entreguePor) {
     setKits(
       kits.map((kit) =>
         kit.id === kitId ? { ...kit, quantidade: kit.quantidade - 1 } : kit
@@ -97,7 +99,7 @@ export function DadosProvider({ children }) {
     );
     setBeneficiarios(
       beneficiarios.map((b) =>
-        b.id === beneficiarioId ? { ...b, atendido: true, kitId: kitId } : b
+        b.id === beneficiarioId ? { ...b, atendido: true, kitId: kitId, entreguePor: entreguePor } : b
       )
     );
   }

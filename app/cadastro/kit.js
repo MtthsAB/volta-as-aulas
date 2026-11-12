@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ScrollView, Alert, StyleSheet } from 'react-native';
+import { ScrollView, KeyboardAvoidingView, Alert, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { useDados } from '../../context/DadosContext';
@@ -47,13 +47,16 @@ export default function CadastroKit() {
 
   return (
     <SafeAreaView style={estilos.container} edges={['bottom']}>
-      <ScrollView contentContainerStyle={estilos.conteudo}>
-        <CampoTexto label="Nome do kit" value={nome} onChangeText={setNome} placeholder="Ex.: Kit Fundamental" />
-        <SeletorNivel valor={nivel} aoSelecionar={setNivel} />
-        <CampoTexto label="Itens" value={itens} onChangeText={setItens} placeholder="Ex.: caderno, lápis, borracha, mochila" />
-        <CampoTexto label="Quantidade" value={quantidade} onChangeText={setQuantidade} placeholder="Ex.: 5" keyboardType="numeric" />
-        <Botao titulo="Salvar" onPress={salvar} />
-      </ScrollView>
+      {/* KeyboardAvoidingView: o teclado empurra o formulário em vez de cobrir os campos */}
+      <KeyboardAvoidingView behavior="padding" style={estilos.container}>
+        <ScrollView contentContainerStyle={estilos.conteudo} keyboardShouldPersistTaps="handled">
+          <CampoTexto label="Nome do kit" value={nome} onChangeText={setNome} placeholder="Ex.: Kit Fundamental" />
+          <SeletorNivel valor={nivel} aoSelecionar={setNivel} />
+          <CampoTexto label="Itens" value={itens} onChangeText={setItens} placeholder="Ex.: caderno, lápis, borracha, mochila" />
+          <CampoTexto label="Quantidade" value={quantidade} onChangeText={setQuantidade} placeholder="Ex.: 5" keyboardType="numeric" />
+          <Botao titulo="Salvar" onPress={salvar} />
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }

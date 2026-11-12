@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity, Modal, StyleSheet } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, Modal, Alert, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useDados } from '../../context/DadosContext';
+import { useAuth } from '../../context/AuthContext';
 import Card from '../../components/Card';
 import Botao from '../../components/Botao';
 import { cores } from '../../styles/cores';
@@ -12,6 +13,7 @@ export default function Entrega() {
   const router = useRouter();
   const { id } = useLocalSearchParams(); // id vem da URL /entrega/[id]
   const { kits, beneficiarios, registrarEntrega } = useDados();
+  const { usuarioLogado } = useAuth();
   // Kit escolhido, aguardando confirmação no Modal
   const [kitEscolhido, setKitEscolhido] = useState(null);
 
@@ -32,8 +34,10 @@ export default function Entrega() {
   );
 
   function confirmarEntrega() {
-    registrarEntrega(familia.id, kitEscolhido.id);
+    // Guarda quem registrou a entrega (usuário logado)
+    registrarEntrega(familia.id, kitEscolhido.id, usuarioLogado.nome);
     setKitEscolhido(null);
+    Alert.alert('Sucesso', 'Entrega registrada!');
     router.back();
   }
 
@@ -69,7 +73,9 @@ export default function Entrega() {
           </View>
         }
         ListEmptyComponent={
-          <Text style={estilos.vazio}>Nenhum kit disponível para este nível</Text>
+          <Text style={estilos.vazio}>
+            Nenhum kit disponível para este nível. Cadastre um kit na aba Kits.
+          </Text>
         }
       />
 

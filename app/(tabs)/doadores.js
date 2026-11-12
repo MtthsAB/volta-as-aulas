@@ -52,7 +52,7 @@ export default function Doadores() {
         keyExtractor={(item) => item.id}
         renderItem={renderizarDoador}
         contentContainerStyle={estilos.lista}
-        ListEmptyComponent={<Text style={estilos.vazio}>Nenhum doador cadastrado.</Text>}
+        ListEmptyComponent={<Text style={estilos.vazio}>Nenhum doador cadastrado. Toque em Novo para adicionar.</Text>}
       />
 
       {/* Modal de confirmação aberto pelo toque longo */}

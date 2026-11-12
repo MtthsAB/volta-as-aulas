@@ -44,6 +44,10 @@ export default function Beneficiarios() {
           <Text style={estilos.detalhe}>Nível: {item.nivel}</Text>
           <Text style={estilos.detalhe}>Escola: {item.escola}</Text>
           {!item.atendido && <Text style={estilos.dica}>Toque para registrar entrega</Text>}
+          {/* Entregas antigas não têm entreguePor; nesse caso nada é mostrado */}
+          {item.atendido && item.entreguePor ? (
+            <Text style={estilos.dica}>Registrado por {item.entreguePor}</Text>
+          ) : null}
         </Card>
       </TouchableOpacity>
     );
@@ -61,7 +65,7 @@ export default function Beneficiarios() {
         keyExtractor={(item) => item.id}
         renderItem={renderizarFamilia}
         contentContainerStyle={estilos.lista}
-        ListEmptyComponent={<Text style={estilos.vazio}>Nenhuma família cadastrada.</Text>}
+        ListEmptyComponent={<Text style={estilos.vazio}>Nenhuma família cadastrada. Toque em Novo para adicionar.</Text>}
       />
 
       {/* Modal de confirmação aberto pelo toque longo */}

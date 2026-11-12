@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, Switch, Alert, StyleSheet } from 'react-native';
+import { View, Text, ScrollView, KeyboardAvoidingView, Switch, Alert, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { useDados } from '../../context/DadosContext';
@@ -37,23 +37,26 @@ export default function CadastroDoador() {
 
   return (
     <SafeAreaView style={estilos.container} edges={['bottom']}>
-      <ScrollView contentContainerStyle={estilos.conteudo}>
-        <CampoTexto label="Nome" value={nome} onChangeText={setNome} placeholder="Nome ou razão social" />
-        <CampoTexto label="Telefone" value={telefone} onChangeText={setTelefone} placeholder="Ex.: 54999990000" keyboardType="phone-pad" />
-        <CampoTexto label="E-mail (opcional)" value={email} onChangeText={setEmail} placeholder="contato@email.com" keyboardType="email-address" />
+      {/* KeyboardAvoidingView: o teclado empurra o formulário em vez de cobrir os campos */}
+      <KeyboardAvoidingView behavior="padding" style={estilos.container}>
+        <ScrollView contentContainerStyle={estilos.conteudo} keyboardShouldPersistTaps="handled">
+          <CampoTexto label="Nome" value={nome} onChangeText={setNome} placeholder="Nome ou razão social" />
+          <CampoTexto label="Telefone" value={telefone} onChangeText={setTelefone} placeholder="Ex.: 54999990000" keyboardType="phone-pad" />
+          <CampoTexto label="E-mail (opcional)" value={email} onChangeText={setEmail} placeholder="contato@email.com" keyboardType="email-address" autoCapitalize="none" />
 
-        {/* Switch liga/desliga o selo de empresa */}
-        <View style={estilos.linhaSwitch}>
-          <Text style={estilos.labelSwitch}>É empresa (pessoa jurídica)?</Text>
-          <Switch
-            value={pessoaJuridica}
-            onValueChange={setPessoaJuridica}
-            trackColor={{ false: cores.borda, true: cores.primaria }}
-          />
-        </View>
+          {/* Switch liga/desliga o selo de empresa */}
+          <View style={estilos.linhaSwitch}>
+            <Text style={estilos.labelSwitch}>É empresa (pessoa jurídica)?</Text>
+            <Switch
+              value={pessoaJuridica}
+              onValueChange={setPessoaJuridica}
+              trackColor={{ false: cores.borda, true: cores.primaria }}
+            />
+          </View>
 
-        <Botao titulo="Salvar" onPress={salvar} />
-      </ScrollView>
+          <Botao titulo="Salvar" onPress={salvar} />
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }

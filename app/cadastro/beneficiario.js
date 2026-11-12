@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ScrollView, Alert, StyleSheet } from 'react-native';
+import { ScrollView, KeyboardAvoidingView, Alert, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { useDados } from '../../context/DadosContext';
@@ -45,14 +45,17 @@ export default function CadastroBeneficiario() {
 
   return (
     <SafeAreaView style={estilos.container} edges={['bottom']}>
-      <ScrollView contentContainerStyle={estilos.conteudo}>
-        <CampoTexto label="Nome do responsável" value={responsavel} onChangeText={setResponsavel} placeholder="Ex.: Ana Lima" />
-        <CampoTexto label="Telefone" value={telefone} onChangeText={setTelefone} placeholder="Ex.: 54999990000" keyboardType="phone-pad" />
-        <CampoTexto label="Nome do estudante" value={estudante} onChangeText={setEstudante} placeholder="Ex.: Pedro Lima" />
-        <CampoTexto label="Escola" value={escola} onChangeText={setEscola} placeholder="Ex.: EMEF São José" />
-        <SeletorNivel valor={nivel} aoSelecionar={setNivel} />
-        <Botao titulo="Salvar" onPress={salvar} />
-      </ScrollView>
+      {/* KeyboardAvoidingView: o teclado empurra o formulário em vez de cobrir os campos */}
+      <KeyboardAvoidingView behavior="padding" style={estilos.container}>
+        <ScrollView contentContainerStyle={estilos.conteudo} keyboardShouldPersistTaps="handled">
+          <CampoTexto label="Nome do responsável" value={responsavel} onChangeText={setResponsavel} placeholder="Ex.: Ana Lima" />
+          <CampoTexto label="Telefone" value={telefone} onChangeText={setTelefone} placeholder="Ex.: 54999990000" keyboardType="phone-pad" />
+          <CampoTexto label="Nome do estudante" value={estudante} onChangeText={setEstudante} placeholder="Ex.: Pedro Lima" />
+          <CampoTexto label="Escola" value={escola} onChangeText={setEscola} placeholder="Ex.: EMEF São José" />
+          <SeletorNivel valor={nivel} aoSelecionar={setNivel} />
+          <Botao titulo="Salvar" onPress={salvar} />
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }

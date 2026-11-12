@@ -48,7 +48,7 @@ export default function Kits() {
         keyExtractor={(item) => item.id}
         renderItem={renderizarKit}
         contentContainerStyle={estilos.lista}
-        ListEmptyComponent={<Text style={estilos.vazio}>Nenhum kit cadastrado.</Text>}
+        ListEmptyComponent={<Text style={estilos.vazio}>Nenhum kit cadastrado. Toque em Novo para adicionar.</Text>}
       />
 
       {/* Modal de confirmação aberto pelo toque longo */}

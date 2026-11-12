@@ -3,18 +3,22 @@ import { View, Text, TextInput, StyleSheet } from 'react-native';
 import { cores } from '../styles/cores';
 
 // Campo de formulário: rótulo + TextInput, configurado por props
-export default function CampoTexto({ label, value, onChangeText, placeholder, keyboardType }) {
+// "erro" mostra uma mensagem vermelha abaixo do campo;
+// as demais props (secureTextEntry, autoCapitalize...) vão direto para o TextInput
+export default function CampoTexto({ label, value, onChangeText, placeholder, keyboardType, erro, ...outras }) {
   return (
     <View style={estilos.container}>
       <Text style={estilos.label}>{label}</Text>
       <TextInput
-        style={estilos.input}
+        style={[estilos.input, erro && estilos.inputErro]}
         value={value}
         onChangeText={onChangeText}
         placeholder={placeholder}
         placeholderTextColor={cores.textoClaro}
         keyboardType={keyboardType || 'default'}
+        {...outras}
       />
+      {erro ? <Text style={estilos.erro}>{erro}</Text> : null}
     </View>
   );
 }
@@ -38,5 +42,13 @@ const estilos = StyleSheet.create({
     paddingVertical: 10,
     fontSize: 16,
     color: cores.texto,
+  },
+  inputErro: {
+    borderColor: cores.vermelho,
+  },
+  erro: {
+    color: cores.vermelho,
+    fontSize: 13,
+    marginTop: 4,
   },
 });
